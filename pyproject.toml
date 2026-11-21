@@ -1,0 +1,36 @@
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "cjktable"
+version = "0.1.0"
+description = "cjktable —— CJK 感知的终端表格与文本排版微库:中文/全角/emoji 混排真正对齐(零依赖)"
+readme = "README.md"
+requires-python = ">=3.9"
+license = { text = "MIT" }
+authors = [{ name = "JAKE1266" }]
+keywords = ["cjk", "terminal", "table", "unicode", "width", "cli", "alignment"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Environment :: Console",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Natural Language :: Chinese (Simplified)",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: Python :: 3.13",
+    "Topic :: Software Development :: Libraries :: Python Modules",
+    "Topic :: Terminals",
+]
+
+[project.urls]
+Homepage = "https://github.com/JAKE1266/cjktable"
+Issues = "https://github.com/JAKE1266/cjktable/issues"
+
+[tool.setuptools.packages.find]
+where = ["src"]
