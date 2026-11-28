@@ -6,7 +6,7 @@
 ![Python](https://img.shields.io/badge/python-3.9%2B-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Dependencies](https://img.shields.io/badge/dependencies-0-brightgreen)
-![Tests](https://img.shields.io/badge/tests-42%20passing-success)
+![Tests](https://img.shields.io/badge/tests-54%20passing-success)
 
 ## 为什么需要它?
 
@@ -43,14 +43,18 @@ print(table(["商品", "库存"], [["键盘", 99], ["鼠标垫超长名称", 7]]
 | `truncate(text, width, ellipsis="…")` | 按显示宽度截断,预留省略号,结果永不超预算 |
 | `table(headers, rows, *, aligns, max_col_width, null_text)` | CJK 对齐表格;数值列自动右对齐 |
 | `bars(items, width)` | 横向条形图 `[(标签, 数值), ...]` |
+| `wrap(text, columns)` | 按显示宽度换行;空白优先断行,超宽内容硬切 |
 
 ## 📦 安装
 
 ```bash
-pip install .        # 或克隆后把 src/ 加入 PYTHONPATH
+python -m pip install .
+
+# 或直接从源码安装
+python -m pip install git+https://github.com/JAKE1266/cjktable.git
 ```
 
-零第三方依赖;`pip install cjktable` 上 PyPI 前请先确认名称占用情况。
+零第三方运行时依赖;`pip install cjktable` 上 PyPI 前请先确认名称占用情况。
 
 ## 🧠 宽度规则
 
@@ -69,8 +73,8 @@ pip install .        # 或克隆后把 src/ 加入 PYTHONPATH
 
 ## 🧪 测试
 
-42 个用例覆盖全部边界:组合字符、零宽字符、变体选择符、emoji 截断、
-模糊宽度、超宽截断、数值列自动右对齐、None 占位、行列补齐……
+54 个用例覆盖全部边界:组合字符、零宽字符、变体选择符、emoji 截断、
+模糊宽度、超宽截断、数值列自动右对齐、None 占位、中英文换行、硬切……
 
 ```bash
 PYTHONPATH=src python -m unittest discover -s tests -v
@@ -81,9 +85,9 @@ PYTHONPATH=src python -m unittest discover -s tests -v
 ```
 cjktable/
 ├── src/cjktable/
-│   ├── core.py     # char_width / width / pad / truncate
+│   ├── core.py     # char_width / width / pad / truncate / wrap
 │   └── render.py   # table / bars
-├── tests/          # 42 个单元测试
+├── tests/          # 54 个单元测试 + 已安装发行包冒烟
 └── pyproject.toml
 ```
 

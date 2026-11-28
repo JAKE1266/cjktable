@@ -4,8 +4,8 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "cjktable"
-version = "0.1.0"
-description = "cjktable —— CJK 感知的终端表格与文本排版微库:中文/全角/emoji 混排真正对齐(零依赖)"
+version = "0.2.0"
+description = "cjktable —— CJK 感知的终端表格、条形图与文本排版微库:中文/全角/emoji 混排对齐与换行(零依赖)"
 readme = "README.md"
 requires-python = ">=3.9"
 license = { text = "MIT" }
