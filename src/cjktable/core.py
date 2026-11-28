@@ -89,3 +89,95 @@ def truncate(text: str, width: int, ellipsis: str = "…") -> str:
     if not out:
         return ellipsis if ell_width <= width else ""
     return "".join(out) + ellipsis
+
+
+def _char_units(text: str) -> list:
+    """把文本拆成不可分割的单元:基字符 + 其后跟随的零宽/组合字符。"""
+    units: list = []
+    for ch in text:
+        if char_width(ch) == 0 and units:
+            units[-1] += ch  # 零宽/组合符号归属前一个基字符,永不拆开
+        else:
+            units.append(ch)
+    return units
+
+
+def _space_chunks(units: list) -> list:
+    """把单元流切成 (是否空格, 块) 的连续段。"""
+    chunks: list = []
+    current = ""
+    current_is_space = None
+    for unit in units:
+        is_space = unit == " "
+        if current and is_space != current_is_space:
+            chunks.append((current_is_space, current))
+            current = ""
+        current_is_space = is_space
+        current += unit
+    if current:
+        chunks.append((current_is_space, current))
+    return chunks
+
+
+def _hard_cut(line: str, columns: int) -> str:
+    """按显示宽度硬切一行,返回切掉的前段。"""
+    out, used = "", 0
+    for unit in _char_units(line):
+        w = _display_width(unit)
+        if used + w > columns:
+            break
+        out += unit
+        used += w
+    return out
+
+
+def wrap(text: str, columns: int) -> list:
+    """按显示宽度把文本换行,返回行列表(不含换行符)。
+
+    规则:
+
+    - 空白处优先断行,新行行首空格丢弃;
+    - 无空格可断(如连续中文)时按列宽硬切;
+    - 超宽单词硬切;
+    - 显式 ``\\n`` 视为强制换行;
+    - 组合/零宽字符跟随其基字符,永不拆开;
+    - 空字符串输入返回 ``[""]``。
+    """
+    if not isinstance(text, str):
+        raise TypeError(f"text 必须是字符串,得到:{type(text).__name__}")
+    if columns < 1:
+        raise ValueError(f"columns 至少为 1:{columns}")
+
+    result: list = []
+    for para in text.replace("\r\n", "\n").replace("\r", "\n").split("\n"):
+        start = len(result)
+        if para == "":
+            result.append("")
+            continue
+        line = ""
+        pending = _space_chunks(_char_units(para))
+        index = 0
+        while index < len(pending):
+            is_space, chunk = pending[index]
+            if is_space and not line:
+                index += 1
+                continue  # 新行行首空格丢弃
+            if _display_width(line) + _display_width(chunk) <= columns or not line:
+                line += chunk
+                index += 1
+            else:
+                result.append(line.rstrip(" "))
+                line = ""
+            while _display_width(line) > columns:  # 单块超宽 → 硬切
+                cut = _hard_cut(line, columns)
+                if not cut:
+                    # 首个单元就超出列宽:仍切出一个单元,保证循环推进
+                    units = _char_units(line)
+                    cut = units[0]
+                result.append(cut)
+                line = line[len(cut):]
+        if line:
+            result.append(line)
+        if len(result) == start:  # 纯空白段落也产出一行
+            result.append("")
+    return result

@@ -2,7 +2,7 @@
 
 让含中文/日文/韩文与 emoji 的文本在等宽终端里真正对齐::
 
-    from cjktable import table, bars, width, pad, truncate
+    from cjktable import table, bars, width, pad, truncate, wrap
 
     print(table(
         ["商品", "数量", "单价"],
@@ -10,10 +10,10 @@
     ))
 """
 
-from cjktable.core import char_width, pad, truncate, width
+from cjktable.core import char_width, pad, truncate, width, wrap
 from cjktable.render import bars, table
 
-__version__ = "0.1.0"
+__version__ = "0.2.0"
 
 __all__ = [
     "bars",
@@ -22,5 +22,6 @@ __all__ = [
     "table",
     "truncate",
     "width",
+    "wrap",
     "__version__",
 ]

@@ -89,7 +89,7 @@ cjktable/
 
 ## 🗺 路线图
 
-- [ ] `wrap(text, columns)` 按显示宽度换行
+- [x] `wrap(text, columns)` 按显示宽度换行(0.2.0)
 - [ ] ZWJ emoji 序列的精准宽度表
 - [x] 本库反哺项目集:CashBook / gitdash / csvq 已改用本库(2026-11-21)
 
